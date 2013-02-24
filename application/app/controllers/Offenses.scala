@@ -1,6 +1,8 @@
 package controllers
 
 import play.api.mvc._
+import application.Global._
+import sindi.core._
 
 object Offenses extends Controller {
 
@@ -23,7 +25,7 @@ object Offenses extends Controller {
         errors => Redirect("/offenses?error"),
         success => {
           val (text) = offenseForm.bindFromRequest.get
-          models.Offenses.saveOffense(text)
+          storageService.addOffensiveWord(text)
           Redirect("/offenses")
         })
 

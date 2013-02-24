@@ -7,6 +7,7 @@ import akka.util.Timeout
 import twitter4j._
 import sindi.core._
 import application.Global._
+import controllers.Streamer
 
 trait StreamingService {
   def start: Unit
@@ -78,7 +79,8 @@ object Util {
 
     def onException(ex: Exception) {
       println(ex.getMessage)
-      //inject[StreamingService].stop
+      streamingService.stop
+      Streamer.streamingState = "Start Streaming"
     }
 
     def onScrubGeo(arg0: Long, arg1: Long) {}

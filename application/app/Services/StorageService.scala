@@ -8,7 +8,7 @@ import play.Logger
 
 trait StorageService {
 
-  def saveOffensiveTweet: Unit
+  def updateStrikes(user:String): Unit
 
   def getStrikeCount: Int
 
@@ -22,17 +22,15 @@ trait StorageService {
 
 class StorageServiceImpl extends StorageService {
 
-  def saveOffensiveTweet {}
+  def updateStrikes(user:String) = models.User.updateStrikes(user)
 
   def getStrikeCount: Int = {
     1
   }
 
-  def getTotalJailed: Int = {
-    1
-  }
+  def getTotalJailed: Int = models.User.getTotalJailedUsers
 
-  def addOffensiveWord(word: String) {}
+  def addOffensiveWord(word: String) = models.Offenses.saveOffense(word)
 
   def saveTweet(tweet: Status) {
     models.User.saveTweet(tweet)

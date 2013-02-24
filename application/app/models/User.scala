@@ -26,7 +26,7 @@ object User extends ModelCompanion[User, ObjectId] {
 
   def findOneByUsername(username: String): Option[User] = dao.findOne(MongoDBObject("username" -> username))
 
-  def findByStrikes = dao.find(ref = MongoDBObject("strikes" -> MongoDBObject("$gte" -> 2)))
+  def findByStrikes = dao.find(ref = MongoDBObject("strikes" -> MongoDBObject("$gte" -> 3)))
     .sort(orderBy = MongoDBObject("strikes" -> -1))
     .limit(5)
     .toList.map(m=>m.username)
@@ -38,13 +38,15 @@ object User extends ModelCompanion[User, ObjectId] {
   }
 
   def saveTweet(tweet: Status) {
-    val username: Option[User] = findOneByUsername(tweet.getUser.getScreenName)
-    val userTweets: List[String] = username.map {
-      m => m.tweets
-    }.getOrElse(List.empty[String])
-    val strikes = username.map(m => m.strikes).getOrElse(0)
-    val user = User(username = tweet.getUser.getScreenName, tweets = (userTweets ::: List(tweet.getText)), strikes = strikes)
-    User.insert(user)
+    val username = findOneByUsername(tweet.getUser.getScreenName).map{
+      m=>
+        val user = m.copy(tweets = m.tweets ::: List(tweet.getText))
+        dao.save(user)
+    }.getOrElse {
+      val user = User(username = tweet.getUser.getScreenName, tweets = List(tweet.getText), strikes = 0)
+      dao.save(user)
+    }
+
     streamingProcessor.tweetActor ! Tick
   }
 

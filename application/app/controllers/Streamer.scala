@@ -54,7 +54,7 @@ object Streamer extends Controller {
   }
 
   def getTotalJailed = Action {
-    Ok(""+models.User.getTotalJailedUsers)
+    Ok(""+storageService.getTotalJailed)
   }
 
 
