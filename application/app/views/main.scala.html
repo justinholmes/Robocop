@@ -121,7 +121,7 @@
                     <ul class="nav">
                         <li><a href="/">Home</a></li>
                         <li><a href="/streamer">Streamer</a></li>
-                        <li><a href="#">Offense</a></li>
+                        <li><a href="/offenses">Offense</a></li>
                         <li><a href="#">Jail</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
@@ -140,10 +140,12 @@
         </div>
         <div class="span4">
             <h2>Top Jailed Users</h2>
+            <h3 class="strikes"></h3>
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
         <div class="span4">
             <h2>Total Jailed Users</h2>
+            <h3 class="getTotalJailed"></h3>
             <p><a class="btn" href="#">View details &raquo;</a></p>
         </div>
     </div>
@@ -174,7 +176,22 @@
             $.get('/streamingStats', function(data) {
                 // Now that we've completed the request schedule the next one.
                 $('.streamingstats').html(data);
-                setTimeout(worker, 10);
+                setTimeout(worker, 1000);
+            });
+        })();
+
+        (function total() {
+            $.get('/getTotalJailed', function(data) {
+                // Now that we've completed the request schedule the next one.
+                $('.getTotalJailed').html(data);
+                setTimeout(total, 1000);
+            });
+        })();
+        (function strikes() {
+            $.get('/strikes', function(data) {
+                // Now that we've completed the request schedule the next one.
+                $('.strikes').html(data);
+                setTimeout(strikes, 1000);
             });
         })();
 

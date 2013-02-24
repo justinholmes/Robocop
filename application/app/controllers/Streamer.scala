@@ -1,14 +1,15 @@
 package controllers
 
 import play.api._
-import libs.Comet
-import libs.iteratee.Enumerator
+
+import libs.json.Json
 import play.api.mvc._
 import sindi.core._
 import Services.{Get, StreamingService}
 import application.Global._
 import concurrent.Future
 import akka.util.Timeout
+import models.User
 
 object Streamer extends Controller {
 
@@ -38,16 +39,23 @@ object Streamer extends Controller {
   import akka.pattern.{ ask, pipe }
   import scala.concurrent.duration._
   import play.api.libs.concurrent.Execution.Implicits._
-  implicit val timeout = Timeout(5 seconds)
+  implicit val timeout = Timeout(100 seconds)
   def streamingStats = Action {
 
-  val number =       ask(streamingProcessor.counter, Get).mapTo[Int]
+  val number =       ask(streamingProcessor.tweetActor, Get).mapTo[Int]
 
     Async{
       number.map(i=> Ok(""+i))
     }
   }
 
+  def strikes = Action{
+    Ok(""+ models.User.findByStrikes.mkString("<br>"))
+  }
+
+  def getTotalJailed = Action {
+    Ok(""+models.User.getTotalJailedUsers)
+  }
 
 
 }

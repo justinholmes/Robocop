@@ -77,7 +77,8 @@ object Util {
     def onTrackLimitationNotice(numberOfLimitedStatuses: Int) {}
 
     def onException(ex: Exception) {
-      inject[StreamingService].stop
+      println(ex.getMessage)
+      //inject[StreamingService].stop
     }
 
     def onScrubGeo(arg0: Long, arg1: Long) {}
