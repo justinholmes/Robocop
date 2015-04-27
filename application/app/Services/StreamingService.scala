@@ -62,10 +62,10 @@ class StreamingServiceImpl extends StreamingService {
 
 object Util {
   val config = new twitter4j.conf.ConfigurationBuilder()
-    .setOAuthConsumerKey("NMt3tyPkYYQTemdaj1HYA")
-    .setOAuthConsumerSecret("xMGUXvUqk97kIzxzGLrTtaFJZf2MMVpIXxPz5gOPU")
-    .setOAuthAccessToken("237737321-WkeIEgXPapQCvpYChgjjJIHfH0PjTq9L5F0LM3Rl")
-    .setOAuthAccessTokenSecret("MdyhaiEd8h0ndh8VihpYzkAVDNSwNOTWhwaxDAVItmc")
+    .setOAuthConsumerKey("")
+    .setOAuthConsumerSecret("")
+    .setOAuthAccessToken("")
+    .setOAuthAccessTokenSecret("")
     .build
 
   def simpleStatusListener = new StatusListener() {
